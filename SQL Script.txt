@@ -1,0 +1,18 @@
+SELECT DISTINCT
+b.customername,
+MAX (balancedat) OVER (PARTITION BY custid) Maxdate,
+FIRST_VALUE (balance)
+OVER (PARTITION BY custid ORDER BY balancedat DESC)
+Balance, 'Bond' as AccountType
+FROM bondbalance a, customer b
+where a.custid=b.id
+union
+select distinct
+b.customername,
+MAX (balancedat) OVER (PARTITION BY custid) Maxdate,
+FIRST_VALUE (balance)
+OVER (PARTITION BY custid ORDER BY balancedat DESC)
+balance, 'CreditCard' as AccountType
+FROM creditcardbalance a, customer b
+where a.custid=b.id
+order by 1
